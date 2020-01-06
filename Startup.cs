@@ -38,8 +38,8 @@ namespace Rentless
         public void ConfigureServices(IServiceCollection services)
         {
            
-            services.AddDbContext<CurrencyContext>(opt =>
-                opt.UseInMemoryDatabase("CurrencyList"));
+            services.AddDbContext<RentlessDBContext>(opt =>
+                opt.UseSqlServer("CurrencyList"));
             services.AddControllers();
             services.AddOData();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

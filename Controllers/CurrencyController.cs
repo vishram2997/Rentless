@@ -14,9 +14,9 @@ namespace Rentless.Controllers
     [ApiController]
     public class CurrencyController : ODataController
     {
-        private readonly CurrencyContext _context;
+        private readonly RentlessDBContext _context;
 
-        public CurrencyController(CurrencyContext context)
+        public CurrencyController(RentlessDBContext context)
         {
             _context = context;
         }
@@ -24,16 +24,16 @@ namespace Rentless.Controllers
         // GET: api/Currency
         [HttpGet]
         [EnableQuery]
-        public async Task<ActionResult<IEnumerable<Currency>>> GetCurrencies()
+        public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
         {
-            return await _context.Currencies.ToListAsync();
+            return await _context.Currency.ToListAsync();
         }
 
         // GET: api/Currency/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Currency>> GetCurrency(long id)
         {
-            var currency = await _context.Currencies.FindAsync(id);
+            var currency = await _context.Currency.FindAsync(id);
 
             if (currency == null)
             {
@@ -47,9 +47,9 @@ namespace Rentless.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurrency(long id, Currency currency)
+        public async Task<IActionResult> PutCurrency(String Code, Currency currency)
         {
-            if (id != currency.Id)
+            if (Code != currency.Code)
             {
                 return BadRequest();
             }
@@ -62,7 +62,7 @@ namespace Rentless.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CurrencyExists(id))
+                if (!CurrencyExists(Code))
                 {
                     return NotFound();
                 }
@@ -81,31 +81,31 @@ namespace Rentless.Controllers
         [HttpPost]
         public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
         {
-            _context.Currencies.Add(currency);
+            _context.Currency.Add(currency);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCurrency), new { id = currency.Id }, currency);
+            return CreatedAtAction(nameof(GetCurrency), new { id = currency.Code }, currency);
         }
 
         // DELETE: api/Currency/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Currency>> DeleteCurrency(long id)
         {
-            var currency = await _context.Currencies.FindAsync(id);
+            var currency = await _context.Currency.FindAsync(id);
             if (currency == null)
             {
                 return NotFound();
             }
 
-            _context.Currencies.Remove(currency);
+            _context.Currency.Remove(currency);
             await _context.SaveChangesAsync();
 
             return currency;
         }
 
-        private bool CurrencyExists(long id)
+        private bool CurrencyExists(string Code)
         {
-            return _context.Currencies.Any(e => e.Id == id);
+            return _context.Currency.Any(e => e.Code == Code);
         }
     }
 }
