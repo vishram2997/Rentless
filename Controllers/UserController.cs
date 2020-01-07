@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Rentless.Services;
 using Rentless.Helpers;
 using Rentless.Models;
+using Microsoft.AspNet.OData;
 namespace Rentless.Controllers
 {
     [Authorize]
@@ -87,6 +88,7 @@ namespace Rentless.Controllers
         }
 
         [HttpGet]
+        [EnableQuery]
         public IActionResult GetAll()
         {
             var users =  _userService.GetAll();

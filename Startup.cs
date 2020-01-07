@@ -19,9 +19,11 @@ using Rentless.Helpers;
 using Rentless.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using AutoMapper;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 namespace Rentless
 {
     public class Startup
@@ -36,6 +38,9 @@ namespace Rentless
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Currency>("Currency");
             builder.EntitySet<User>("User");
+            builder.EntitySet<User>("Country");
+            builder.EntitySet<User>("State");
+            builder.EntitySet<User>("City");
             return builder.GetEdmModel();
         }
 
@@ -114,14 +119,6 @@ namespace Rentless
                 app.UseDeveloperExceptionPage();
             }
 
-           app.UseMvc(routeBuilder => {
- 
-                routeBuilder.EnableDependencyInjection();
-            
-                routeBuilder.Select().Expand().OrderBy().Filter().MaxTop(null).Count();
-                routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
-            
-            });
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -133,8 +130,18 @@ namespace Rentless
                 .AllowAnyHeader()
                 );
 
-            app.UseAuthorization();
-
+           
+            
+            app.UseAuthentication();
+            app.UseMvc(routeBuilder => {
+ 
+                routeBuilder.EnableDependencyInjection();
+            
+                routeBuilder.Select().Expand().OrderBy().Filter().MaxTop(null).Count();
+                routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
+            
+            });
+          
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
