@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rentless.Models;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rentless.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CurrencyController : ODataController
     {
         private readonly RentlessDBContext _context;

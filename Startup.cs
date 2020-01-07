@@ -18,7 +18,10 @@ using Microsoft.AspNet.OData.Extensions;
 using Rentless.Helpers;
 using Rentless.Services;
 using Microsoft.AspNetCore.Authentication;
-
+using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace Rentless
 {
     public class Startup
@@ -32,6 +35,7 @@ namespace Rentless
         {
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Currency>("Currency");
+            builder.EntitySet<User>("User");
             return builder.GetEdmModel();
         }
 
@@ -42,15 +46,60 @@ namespace Rentless
         {
            
             services.AddDbContext<RentlessDBContext>(opt =>
-                opt.UseSqlServer("CurrencyList"));
+                opt.UseSqlServer(@"Server=.\;Database=Rentless;Trusted_Connection=True;MultipleActiveResultSets=true"));
             services.AddControllers();
             services.AddOData();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddAutoMapper(typeof(Startup));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+            
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                        var userId = context.Principal.Identity.Name;
+                        var user = userService.GetById(userId);
+                        if (user == null)
+                        {
+                            // return unauthorized if user no longer exists
+                            context.Fail("Unauthorized");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
@@ -82,7 +131,7 @@ namespace Rentless
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials());
+                );
 
             app.UseAuthorization();
 
