@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentless.Models;
 
 namespace Rentless.Migrations
 {
     [DbContext(typeof(RentlessDBContext))]
-    partial class RentlessDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200108054538_DefaultBlank")]
+    partial class DefaultBlank
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,9 @@ namespace Rentless.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+                        
 
                     b.Property<string>("StateCode")
                         .HasColumnType("nvarchar(10)")
@@ -54,11 +58,13 @@ namespace Rentless.Migrations
 
                     b.Property<string>("CurrencyCode")
                         .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                        .HasMaxLength(10)
+                        .HasDefaultValue("");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
 
                     b.HasKey("Id");
 
@@ -75,7 +81,8 @@ namespace Rentless.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
 
                     b.HasKey("Code");
 
@@ -90,11 +97,13 @@ namespace Rentless.Migrations
 
                     b.Property<string>("CountryId")
                         .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                        .HasMaxLength(10)
+                        .HasDefaultValue("");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
 
                     b.HasKey("Code");
 
@@ -126,7 +135,8 @@ namespace Rentless.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
 
                     b.Property<string>("Password")
                         .IsRequired()

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Rentless.Models
 
@@ -13,12 +14,21 @@ namespace Rentless.Models
         public string Desc {get; set;}
 
         
-       
+        [StringLength(10)]
+        [DefaultValue("")]
+        public string CityCode{get; set;}
         public City City {get; set;}
 
 
       
+        [StringLength(10)]
+        [DefaultValue("")]
+        public string StateCode{get; set;}
         public State State {get; set;}
+
+        [StringLength(10)]
+        [DefaultValue("")]
+        public string CountryId{get; set;}
         public Country Country {get; set;}
     }
 

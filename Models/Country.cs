@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 namespace Rentless.Models
 {
     public class Country
@@ -9,6 +10,7 @@ namespace Rentless.Models
         public string Id {get; set;}
 
         [StringLength(50)]
+        [DefaultValue("")]
         public string Name {get; set;}
 
         [StringLength(10)]

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 namespace Rentless.Models
 {
     public class User
@@ -14,6 +15,7 @@ namespace Rentless.Models
         public string FirstName {get; set;}
 
         [StringLength(50)]
+        [DefaultValue("")]
         public string LastName {get; set;}
 
         [StringLength(50)]
