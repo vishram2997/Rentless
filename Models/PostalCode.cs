@@ -13,17 +13,12 @@ namespace Rentless.Models
         public string Desc {get; set;}
 
         
-        [StringLength(10)]
-        public string CityCode {get; set;}
+       
         public City City {get; set;}
 
 
-        [StringLength(10)]
-        public string StateCode {get; set;}
+      
         public State State {get; set;}
-
-        [StringLength(10)]
-        public string CountryCode {get; set;}
         public Country Country {get; set;}
     }
 

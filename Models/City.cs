@@ -11,13 +11,7 @@ namespace Rentless.Models
         public string Code {get; set;}
         [StringLength(50)]
         public string Name {get; set;}
-
-        [StringLength(10)]
-        public string StateCode {get; set;}
         public State State {get; set;}
-
-        [StringLength(10)]
-        public string CountryCode {get; set;}
         public Country Country {get; set;}
     }
 

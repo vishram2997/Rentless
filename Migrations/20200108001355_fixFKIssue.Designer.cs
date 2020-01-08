@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentless.Models;
 
 namespace Rentless.Migrations
 {
     [DbContext(typeof(RentlessDBContext))]
-    partial class RentlessDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200108001355_fixFKIssue")]
+    partial class fixFKIssue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,17 +88,11 @@ namespace Rentless.Migrations
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
-                    b.Property<string>("CountryId")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Code");
-
-                    b.HasIndex("CountryId");
 
                     b.ToTable("State");
                 });
@@ -158,13 +154,6 @@ namespace Rentless.Migrations
                     b.HasOne("Rentless.Models.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyCode");
-                });
-
-            modelBuilder.Entity("Rentless.Models.State", b =>
-                {
-                    b.HasOne("Rentless.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
                 });
 #pragma warning restore 612, 618
         }

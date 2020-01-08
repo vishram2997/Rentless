@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentless.Models;
 
 namespace Rentless.Migrations
 {
     [DbContext(typeof(RentlessDBContext))]
-    partial class RentlessDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200108001518_stateFix")]
+    partial class stateFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +89,7 @@ namespace Rentless.Migrations
                         .HasMaxLength(10);
 
                     b.Property<string>("CountryId")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")

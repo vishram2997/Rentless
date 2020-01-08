@@ -14,7 +14,7 @@ namespace Rentless.Models
         public string Name {get; set;}
 
         [StringLength(10)]
-        public string CountryCode {get; set;}
+        public string CountryId {get; set;}
         public Country Country {get; set;}
     }
 
