@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Rentless.Models;
 namespace Rentless.Models {
     public class RentlessDBContext: DbContext
     {
@@ -17,6 +18,7 @@ namespace Rentless.Models {
         public DbSet<State> State {get; set;}
         public DbSet<City> City {get; set;}
         public DbSet<User> Users {get; set;}
+        public DbSet<Rentless.Models.PostalCode> PostalCode { get; set; }
     }
 
     // required when local database deleted
