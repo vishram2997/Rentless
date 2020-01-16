@@ -24,8 +24,6 @@ namespace Rentless.Models
 
         public VerificationStatus VerificationStatus {get; set;}
 
-        public byte[] Picture {get; set;}
-
         [StringLength(50)]
         [Required]
         public string ContactNo {get; set;}
@@ -33,3 +31,4 @@ namespace Rentless.Models
 
 
     }
+}

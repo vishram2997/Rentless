@@ -11,7 +11,7 @@ namespace Rentless.Models
 
     public enum VerificationStatus
     {
-        NotStarted = 0,
+        NotRequired = 0,
         InProcess = 1,
         Approved = 2,
         NotApproved = 3
@@ -29,5 +29,13 @@ namespace Rentless.Models
     public enum IncomeBalance {
         IncomeStatement = 0
         ,BalanceSheet  = 1
+    }
+
+    public enum AttributeValueType {
+        NoYes = 0,
+        List = 1,
+        Text = 2,
+        Date = 3
+        
     }
 }
