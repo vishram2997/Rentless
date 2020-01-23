@@ -2,8 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Rentless.Models;
 
 namespace Rentless.Migrations
@@ -15,29 +16,47 @@ namespace Rentless.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("Rentless.Models.AttributeType", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("ValueType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("AttributeType");
+                });
 
             modelBuilder.Entity("Rentless.Models.City", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("StateCode")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("CountryId")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("StateCode")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
-                    b.HasKey("Code");
+                    b.HasKey("Code", "StateCode");
 
                     b.HasIndex("CountryId");
 
@@ -49,15 +68,15 @@ namespace Rentless.Migrations
             modelBuilder.Entity("Rentless.Models.Country", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("CurrencyCode")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -70,11 +89,11 @@ namespace Rentless.Migrations
             modelBuilder.Entity("Rentless.Models.Currency", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Code");
@@ -82,18 +101,326 @@ namespace Rentless.Migrations
                     b.ToTable("Currency");
                 });
 
+            modelBuilder.Entity("Rentless.Models.CustListing", b =>
+                {
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<int>("ProductCode")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("numeric");
+
+                    b.Property<Point>("Location")
+                        .HasColumnType("geometry");
+
+                    b.Property<decimal>("Longtude")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("CustomerId", "ProductCode");
+
+                    b.HasIndex("ProductCode");
+
+                    b.ToTable("CustListing");
+                });
+
+            modelBuilder.Entity("Rentless.Models.CustPaymMode", b =>
+                {
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("PaymModeCode")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("AccountNo")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("BIC")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CVV")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CVV2")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("ExpDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("IBAN")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("IFSC")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("RoutingNo")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Swift")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("CustomerId", "PaymModeCode");
+
+                    b.HasIndex("PaymModeCode");
+
+                    b.ToTable("CustPaymMode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.Customer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("ContactNo")
+                        .IsRequired()
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("VerificationStatus")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("Rentless.Models.DocuType", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Code");
+
+                    b.ToTable("DocuType");
+                });
+
+            modelBuilder.Entity("Rentless.Models.Document", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasMaxLength(10)
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("DocuTypeCode")
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("FileBase64")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocuTypeCode");
+
+                    b.ToTable("Document");
+                });
+
+            modelBuilder.Entity("Rentless.Models.PaymMode", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("ReqAccountNo")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqBIC")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqCVV")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqCVV2")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqExpDate")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqIBAN")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqIFSC")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqRoutingNo")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ReqSwift")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("PaymMode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.PostalCode", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("CityCode")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("CityCode1")
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("CityStateCode")
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("CountryId")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("StateCode")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("StateCode");
+
+                    b.HasIndex("CityCode1", "CityStateCode");
+
+                    b.ToTable("PostalCode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.Product", b =>
+                {
+                    b.Property<int>("Code")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Desc2")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Code");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("Rentless.Models.ProductAttribute", b =>
+                {
+                    b.Property<int>("ProductCoode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("AttributeTypeCode")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<int?>("ProductCode")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("ProductCoode");
+
+                    b.HasIndex("AttributeTypeCode");
+
+                    b.HasIndex("ProductCode");
+
+                    b.ToTable("ProductAttribute");
+                });
+
+            modelBuilder.Entity("Rentless.Models.ProductDocument", b =>
+                {
+                    b.Property<int>("ProductCode")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DocumentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("VerificationStatus")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProductCode", "DocumentId");
+
+                    b.HasIndex("DocumentId");
+
+                    b.ToTable("ProductDocument");
+                });
+
             modelBuilder.Entity("Rentless.Models.State", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("CountryId")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Code");
@@ -106,38 +433,38 @@ namespace Rentless.Migrations
             modelBuilder.Entity("Rentless.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("ContactNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasMaxLength(20);
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasMaxLength(20);
 
                     b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -152,7 +479,9 @@ namespace Rentless.Migrations
 
                     b.HasOne("Rentless.Models.State", "State")
                         .WithMany()
-                        .HasForeignKey("StateCode");
+                        .HasForeignKey("StateCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rentless.Models.Country", b =>
@@ -160,6 +489,84 @@ namespace Rentless.Migrations
                     b.HasOne("Rentless.Models.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyCode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.CustListing", b =>
+                {
+                    b.HasOne("Rentless.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rentless.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rentless.Models.CustPaymMode", b =>
+                {
+                    b.HasOne("Rentless.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rentless.Models.PaymMode", "PaymMode")
+                        .WithMany()
+                        .HasForeignKey("PaymModeCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rentless.Models.Document", b =>
+                {
+                    b.HasOne("Rentless.Models.DocuType", "DocuType")
+                        .WithMany()
+                        .HasForeignKey("DocuTypeCode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.PostalCode", b =>
+                {
+                    b.HasOne("Rentless.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("Rentless.Models.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateCode");
+
+                    b.HasOne("Rentless.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityCode1", "CityStateCode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.ProductAttribute", b =>
+                {
+                    b.HasOne("Rentless.Models.AttributeType", "AttributeType")
+                        .WithMany()
+                        .HasForeignKey("AttributeTypeCode");
+
+                    b.HasOne("Rentless.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductCode");
+                });
+
+            modelBuilder.Entity("Rentless.Models.ProductDocument", b =>
+                {
+                    b.HasOne("Rentless.Models.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rentless.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rentless.Models.State", b =>

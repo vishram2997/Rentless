@@ -9,7 +9,7 @@ namespace Rentless.Models
     {
         [Key]
         [StringLength(10)]
-        [Identity]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id {get; set;}
 
         public string DocuTypeCode {get; set;}

@@ -14,7 +14,7 @@ namespace Rentless.Models
         public string Desc {get; set;}
 
         
-        [StringLength(10)]
+        [StringLength(30)]
         [DefaultValue("")]
         public string CityCode{get; set;}
         public City City {get; set;}

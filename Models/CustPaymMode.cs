@@ -9,12 +9,10 @@ namespace Rentless.Models
        
 
         [StringLength(10)]
-        [Key, Column(Order = 0)]
         public string CustomerId {get; set;}
         public Customer Customer {get; set;}
 
         [StringLength(10)]
-        [Key, Column(Order = 1)]
         public string PaymModeCode {get; set;}
         public PaymMode PaymMode {get; set;}
 

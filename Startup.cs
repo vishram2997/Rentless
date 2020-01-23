@@ -24,6 +24,7 @@ using AutoMapper;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using NetTopologySuite;
 namespace Rentless
 {
     public class Startup
@@ -41,6 +42,11 @@ namespace Rentless
             builder.EntitySet<User>("Country");
             builder.EntitySet<User>("State");
             builder.EntitySet<User>("City");
+            builder.EntitySet<User>("Customer");
+            builder.EntitySet<User>("Product");
+            builder.EntitySet<User>("CustListing");
+            
+
             return builder.GetEdmModel();
         }
 
@@ -51,8 +57,10 @@ namespace Rentless
         {
            
             services.AddDbContext<RentlessDBContext>(opt =>
-                opt.UseSqlServer(@"Server=.\;Database=Rentless;Trusted_Connection=True;MultipleActiveResultSets=true"));
-            services.AddControllers();
+                opt.UseNpgsql(@"Host=localhost;Database=Rentless;Username=postgres;Password=123456",
+                        x => x.UseNetTopologySuite()));
+                //opt.UseSqlServer(@"Server=.\;Database=Rentless;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            services.AddControllers().AddNewtonsoftJson();
             services.AddOData();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc(option => option.EnableEndpointRouting = false);

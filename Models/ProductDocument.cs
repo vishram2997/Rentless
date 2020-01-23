@@ -8,12 +8,10 @@ namespace Rentless.Models
     public class ProductDocument
     {
 
-        [Key,  Column(Order = 0)]
-        public int ProductCoode {get; set;}
+        public int ProductCode {get; set;}
         public Product Product {get; set;}
 
 
-        [Key,  Column(Order = 1)]
         public int DocumentId {get; set;}
         public Document Document {get; set;}
 

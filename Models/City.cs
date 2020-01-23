@@ -7,8 +7,7 @@ namespace Rentless.Models
 {
     public class City
     {
-        [Key]
-        [StringLength(10)]
+        [StringLength(30)]
         public string Code {get; set;}
         [StringLength(50)]
         [DefaultValue("")]

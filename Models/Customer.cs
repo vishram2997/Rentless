@@ -8,7 +8,6 @@ namespace Rentless.Models
     {
         [StringLength(20)]
         [Key]
-        [Required]
         public string Id {get; set;}
 
         [StringLength(50)]
