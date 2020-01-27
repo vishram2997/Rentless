@@ -10,10 +10,11 @@ BaseUrl = 'https://localhost:6001/api/'
 
 
 def send(data, url):
+    print(data)
     result = requests.post(url,data= data,
         headers={'Content-Type':'application/json',
                 'Authorization': 'Bearer {}'.format(access_token)},verify=False)
-    print(result.status_code)
+    print(result.content)
 
 
 
@@ -52,6 +53,28 @@ def importState():
         jsonData = json.dumps(row)
         send(jsonData, BaseUrl+'state')
    
+   
+
+def importCustListing():
+    csvfile = open('./data/CustProduct.txt', 'r')
+    f1 = csvfile.readlines()
+    for row in f1:
+        jsonData =  json.loads(str(row))
+       # jsonData = jsonData.replace("\'","")
+       # print(jsonData)
+        send(jsonData, BaseUrl+'CustListing')
+   
+
+
+def importDocuType():
+    csvfile = open('./data/CustProduct.txt', 'r')
+    f1 = csvfile.readlines()
+    for row in f1:
+        jsonData =  json.loads(str(row))
+       # jsonData = jsonData.replace("\'","")
+       # print(jsonData)
+        send(jsonData, BaseUrl+'CustListing')
+   
 
 # Python 3 program for the 
 # haversine formula 
@@ -83,4 +106,5 @@ def haversine(lat1, lon1, lat2, lon2):
 #importCurrency()
 #importCountry()
 #importState()
-importCity
+#importCity
+importCustListing()

@@ -24,7 +24,30 @@ namespace Rentless.Models
         public double Latitude {get; set;}
 
 
-        
+    }
+
+    public class CustListingView
+    {
+
+
+
+        [StringLength(10)]
+        public string CustomerId {get; set;}
+        public Customer Customer {get; set;}
+
+        public int ProductCode {get; set;}
+        public Product Product {get; set;}
+
+        public Point Location {get; set;}
+
+        public double Longtude {get; set;}
+
+        public double Latitude {get; set;}
+
+
+
+        public double Distance {get; set;}
+
 
     }
 }

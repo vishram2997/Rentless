@@ -25,7 +25,10 @@ namespace Rentless.Controllers
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<City>>> GetCity()
         {
-            return await _context.City.ToListAsync();
+            return await _context.City
+                        .Include(x=> x.Country)
+                        .Include(x=> x.State)
+                        .ToListAsync();
         }
 
         // GET: api/City/5
@@ -98,6 +101,33 @@ namespace Rentless.Controllers
             }
 
             return CreatedAtAction("GetCity", new { id = city.Code }, city);
+        }
+
+
+        [Route("api/[controller]/[action")]
+        [HttpPost]
+        public async Task<ActionResult<City>> Bulk(List<City> cities)
+        {
+            foreach(City city in cities)
+            {
+                _context.City.Add(city);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    if (CityExists(city.Code))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return Ok("Inserted");
         }
 
         // DELETE: api/City/5

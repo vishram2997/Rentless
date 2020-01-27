@@ -15,8 +15,14 @@ namespace Rentless.Models {
         {
 
             modelBuilder.Entity<AttributeValue>()
+                .HasOne(p => p.AttributeType)
+                .WithMany(b => b.values);
+                
+            modelBuilder.Entity<AttributeValue>()
                 .HasKey(o => new { o.AttributeTypeCode, o.Value });
-          
+                
+                
+            
 
             modelBuilder.Entity<City>()
                 .HasKey(o => new { o.Code, o.StateCode });

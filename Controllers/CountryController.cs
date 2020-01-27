@@ -25,7 +25,9 @@ namespace Rentless.Controllers
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountry()
         {
-            return await _context.Country.ToListAsync();
+            return await _context.Country
+                        .Include(x=> x.Currency)
+                        .ToListAsync();
         }
 
         // GET: api/Country/5
@@ -98,6 +100,34 @@ namespace Rentless.Controllers
             }
 
             return CreatedAtAction("GetCountry", new { id = country.Id }, country);
+        }
+
+
+        [Route("api/[controller]/[action")]
+        [HttpPost]
+        public async Task<ActionResult<Country>> Bulk(List <Country> countries)
+        {
+
+            foreach(Country country in countries)
+            {
+                _context.Country.Add(country);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    if (CountryExists(country.Id))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return Ok("inserted");
         }
 
         // DELETE: api/Country/5

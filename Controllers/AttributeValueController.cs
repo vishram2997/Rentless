@@ -24,7 +24,8 @@ namespace Rentless.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AttributeValue>>> GetAttributeValue()
         {
-            return await _context.AttributeValue.ToListAsync();
+            return await _context.AttributeValue
+                        .ToListAsync();
         }
 
         // GET: api/AttributeValue/5
@@ -97,6 +98,36 @@ namespace Rentless.Controllers
             }
 
             return CreatedAtAction("GetAttributeValue", new { id = attributeValue.AttributeTypeCode }, attributeValue);
+        }
+
+
+
+        //BULK UPDATE
+        [Route("api/[controller]/[action]")]
+        [HttpPost]
+        public async Task<ActionResult<AttributeValue>> Bulk(List<AttributeValue> attributeValues)
+        {
+            foreach(AttributeValue attributeValue in attributeValues )
+            {
+                _context.AttributeValue.Add(attributeValue);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    if (AttributeValueExists(attributeValue.AttributeTypeCode))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return Ok("Inserted");
         }
 
         // DELETE: api/AttributeValue/5

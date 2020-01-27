@@ -24,7 +24,10 @@ namespace Rentless.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AttributeType>>> GetAttributeType()
         {
-            return await _context.AttributeType.ToListAsync();
+            return await _context.AttributeType
+                        .Include(t => t.values)
+                        
+                        .ToListAsync();
         }
 
         // GET: api/AttributeType/5
@@ -97,6 +100,36 @@ namespace Rentless.Controllers
             }
 
             return CreatedAtAction("GetAttributeType", new { id = attributeType.Code }, attributeType);
+        }
+
+
+        //Bulk update 
+
+        [Route("api/[controller]/[action]")]
+        [HttpPost]
+        public async Task<ActionResult<AttributeType>> Bulk(List <AttributeType> attributeTypes)
+        {
+
+            foreach(AttributeType attributeType in attributeTypes)
+            {
+                _context.AttributeType.Add(attributeType);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    if (AttributeTypeExists(attributeType.Code))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return Ok("Inserted All")
         }
 
         // DELETE: api/AttributeType/5

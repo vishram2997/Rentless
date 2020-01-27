@@ -25,6 +25,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using NetTopologySuite;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 namespace Rentless
 {
     public class Startup
@@ -61,9 +63,22 @@ namespace Rentless
                         x => x.UseNetTopologySuite()));
                 //opt.UseSqlServer(@"Server=.\;Database=Rentless;Trusted_Connection=True;MultipleActiveResultSets=true"));
             services.AddControllers().AddNewtonsoftJson();
+             // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rentless API", Version = "v1" });
+            });
+            // configure strongly typed settings objects
+
             services.AddOData();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            .AddNewtonsoftJson(x => {
+                x.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                }
+            );
+
+
             services.AddAutoMapper(typeof(Startup));
             services.AddCors(options =>
             {
@@ -73,7 +88,7 @@ namespace Rentless
                     .AllowAnyHeader());
             });
             
-            // configure strongly typed settings objects
+           
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
@@ -144,10 +159,18 @@ namespace Rentless
             app.UseMvc(routeBuilder => {
  
                 routeBuilder.EnableDependencyInjection();
-            
+               
                 routeBuilder.Select().Expand().OrderBy().Filter().MaxTop(null).Count();
                 routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
+                
             
+            });
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseSwagger();
+
+           app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rentless API V1");
             });
           
             app.UseEndpoints(endpoints =>
