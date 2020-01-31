@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "835add0b-7b24-47ee-94ba-ecfd386719b1",
+		"name": "Rentless",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ProdImage",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZpc2hyYW0yOTk3IiwibmJmIjoxNTc5NjQzNTIzLCJleHAiOjE1ODAyNDgzMjMsImlhdCI6MTU3OTY0MzUyM30.MdnLaKHS2wKAHbUwMD3_emsQL9OMLV_YUn9-AybMw5Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"ProductCode\":374,\r\n\t\"Desc\":\"front\",\r\n\t\"FileBase64\":\"data:image/jpeg;base64,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\"\r\n\t\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/ProdImage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"ProdImage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6000/api/Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZpc2hyYW0yOTk3IiwibmJmIjoxNTc5NjQzNTIzLCJleHAiOjE1ODAyNDgzMjMsImlhdCI6MTU3OTY0MzUyM30.MdnLaKHS2wKAHbUwMD3_emsQL9OMLV_YUn9-AybMw5Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"Desc\":\"Tesla Model X\",\n\"Desc2\":\"Tesla model S mid range\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6000/api/customer",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZpc2hyYW0yOTk3IiwibmJmIjoxNTc5NjQzNTIzLCJleHAiOjE1ODAyNDgzMjMsImlhdCI6MTU3OTY0MzUyM30.MdnLaKHS2wKAHbUwMD3_emsQL9OMLV_YUn9-AybMw5Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"FirstName\":\"Vishram\",\n\t\"LastName\":\"Singh\",\n\t\"Email\":\"vishram2997@gmail.com\",\n\t\"ContactNo\":\"2348239239\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6000/api/users/authenticate",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\":\"vishram2997\",\n\n\t\"Password\":\"test\"\n\n\n}"
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/users/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"users",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6000/api/users/register",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\":\"vishram2997\",\n\t\"FirstName\":\"Vishram\",\n\t\"LastName\":\"Singh\",\n\t\"Password\":\"test\",\n\t\"Email\":\"abc@gmail.com\",\n\t\"ContactNo\":\"234234\"\n\n}"
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6000/api/ProductAttribute",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZpc2hyYW0yOTk3IiwibmJmIjoxNTc5NjQzNTIzLCJleHAiOjE1ODAyNDgzMjMsImlhdCI6MTU3OTY0MzUyM30.MdnLaKHS2wKAHbUwMD3_emsQL9OMLV_YUn9-AybMw5Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n\t\"ProductCode\":374,\r\n\t\"AttributeTypeCode\":\"BodyType\",\r\n\t\"Value\":\"Sedan\"\r\n\t\r\n},\r\n{\r\n\t\"ProductCode\":374,\r\n\t\"AttributeTypeCode\":\"Color\",\r\n\t\"Value\":\"Black\"\r\n\t\r\n},\r\n{\r\n\t\"ProductCode\":374,\r\n\t\"AttributeTypeCode\":\"GearType\",\r\n\t\"Value\":\"Automatic\"\r\n\t\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/ProductAttribute",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"ProductAttribute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNearbyProducts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZpc2hyYW0yOTk3IiwibmJmIjoxNTc5NjQzNTIzLCJleHAiOjE1ODAyNDgzMjMsImlhdCI6MTU3OTY0MzUyM30.MdnLaKHS2wKAHbUwMD3_emsQL9OMLV_YUn9-AybMw5Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"Longitude\":-121.933865,\r\n\t\"Latitude\":37.480457,\r\n\t\"Distance\":20\r\n\t\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6000/api/GetNearbyProducts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"api",
+						"GetNearbyProducts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
