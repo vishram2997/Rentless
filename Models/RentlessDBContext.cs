@@ -21,8 +21,6 @@ namespace Rentless.Models {
             modelBuilder.Entity<AttributeValue>()
                 .HasKey(o => new { o.AttributeTypeCode, o.Value });
                 
-                
-            
 
             modelBuilder.Entity<City>()
                 .HasKey(o => new { o.Code, o.StateCode });
@@ -35,8 +33,13 @@ namespace Rentless.Models {
 
             modelBuilder.Entity<ProductDocument>()
                 .HasKey(o => new { o.ProductCode, o.DocumentId });
-          
 
+            modelBuilder.Entity<ProductAttribute>()
+                .HasKey(o => new { o.ProductCode, o.AttributeTypeCode });
+
+             modelBuilder.Entity<ProdImage>()
+                .HasKey(o => new { o.Id, o.ProductCode });
+                
 
         }
         public DbSet<Currency> Currency {get; set;}
@@ -58,6 +61,7 @@ namespace Rentless.Models {
         public DbSet<AttributeType> AttributeType { get; set; }
 
         public DbSet<AttributeValue> AttributeValue {get; set;}
+        public DbSet<ProdImage> ProdImage {get; set;}
 
 
 

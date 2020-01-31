@@ -47,7 +47,7 @@ namespace Rentless.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductAttribute(int id, ProductAttribute productAttribute)
         {
-            if (id != productAttribute.ProductCoode)
+            if (id != productAttribute.ProductCode)
             {
                 return BadRequest();
             }
@@ -73,6 +73,20 @@ namespace Rentless.Controllers
             return NoContent();
         }
 
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ActionResult<ProductAttribute>> Bulk(List <ProductAttribute> productAttributes)
+        {
+
+            foreach(ProductAttribute productAttribute in productAttributes)
+            {
+                _context.ProductAttribute.Add(productAttribute);
+                await _context.SaveChangesAsync();
+            }
+            return Ok("Created");
+        }
         // POST: api/ProductAttribute
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -82,7 +96,7 @@ namespace Rentless.Controllers
             _context.ProductAttribute.Add(productAttribute);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProductAttribute", new { id = productAttribute.ProductCoode }, productAttribute);
+            return CreatedAtAction("GetProductAttribute", new { id = productAttribute.ProductCode }, productAttribute);
         }
 
         // DELETE: api/ProductAttribute/5
@@ -103,7 +117,7 @@ namespace Rentless.Controllers
 
         private bool ProductAttributeExists(int id)
         {
-            return _context.ProductAttribute.Any(e => e.ProductCoode == id);
+            return _context.ProductAttribute.Any(e => e.ProductCode == id);
         }
     }
 }

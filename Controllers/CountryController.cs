@@ -103,7 +103,7 @@ namespace Rentless.Controllers
         }
 
 
-        [Route("api/[controller]/[action")]
+        [Route("api/[controller]/[action]")]
         [HttpPost]
         public async Task<ActionResult<Country>> Bulk(List <Country> countries)
         {

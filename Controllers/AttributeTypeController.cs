@@ -129,7 +129,7 @@ namespace Rentless.Controllers
                     }
                 }
             }
-            return Ok("Inserted All")
+            return Ok("Inserted All");
         }
 
         // DELETE: api/AttributeType/5

@@ -8,8 +8,8 @@ namespace Rentless.Models
     public class ProductAttribute
     {
 
-        [Key]
-        public int ProductCoode {get; set;}
+        
+        public int ProductCode {get; set;}
         public Product Product {get; set;}
 
         [StringLength(10)]

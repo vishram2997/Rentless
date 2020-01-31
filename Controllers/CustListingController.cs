@@ -98,7 +98,8 @@ namespace Rentless.Controllers
             // using spatial queries.  
             var productNearby = _context  
                 .CustListing
-                .Include(c => c.Product) 
+                .Include(c => c.Product)
+                .ThenInclude(x=> x.ProductAttributes)
                 .OrderBy(t => t.Location.Distance(point))
                 .Select(t => new { Place = t, Distance = AppHelper.distance(longLatDis.Latitude, longLatDis.Longitude, t.Latitude, t.Longtude, 'M')})  
                 .ToList();  

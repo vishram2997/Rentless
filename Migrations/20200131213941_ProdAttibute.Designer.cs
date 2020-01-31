@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -10,9 +11,10 @@ using Rentless.Models;
 namespace Rentless.Migrations
 {
     [DbContext(typeof(RentlessDBContext))]
-    partial class RentlessDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200131213941_ProdAttibute")]
+    partial class ProdAttibute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -355,30 +357,6 @@ namespace Rentless.Migrations
                     b.ToTable("PostalCode");
                 });
 
-            modelBuilder.Entity("Rentless.Models.ProdImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ProductCode")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Desc")
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("FileBase64")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id", "ProductCode");
-
-                    b.HasIndex("ProductCode");
-
-                    b.ToTable("ProdImage");
-                });
-
             modelBuilder.Entity("Rentless.Models.Product", b =>
                 {
                     b.Property<int>("Code")
@@ -584,15 +562,6 @@ namespace Rentless.Migrations
                         .HasForeignKey("CityCode1", "CityStateCode");
                 });
 
-            modelBuilder.Entity("Rentless.Models.ProdImage", b =>
-                {
-                    b.HasOne("Rentless.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Rentless.Models.ProductAttribute", b =>
                 {
                     b.HasOne("Rentless.Models.AttributeType", "AttributeType")
@@ -602,7 +571,7 @@ namespace Rentless.Migrations
                         .IsRequired();
 
                     b.HasOne("Rentless.Models.Product", "Product")
-                        .WithMany("ProductAttributes")
+                        .WithMany()
                         .HasForeignKey("ProductCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

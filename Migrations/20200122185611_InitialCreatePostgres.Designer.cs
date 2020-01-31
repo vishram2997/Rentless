@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -10,14 +11,15 @@ using Rentless.Models;
 namespace Rentless.Migrations
 {
     [DbContext(typeof(RentlessDBContext))]
-    partial class RentlessDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200122185611_InitialCreatePostgres")]
+    partial class InitialCreatePostgres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Rentless.Models.AttributeType", b =>
@@ -38,28 +40,9 @@ namespace Rentless.Migrations
                     b.ToTable("AttributeType");
                 });
 
-            modelBuilder.Entity("Rentless.Models.AttributeValue", b =>
-                {
-                    b.Property<string>("AttributeTypeCode")
-                        .HasColumnType("character varying(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("Value")
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("AttributeTypeCode", "Value");
-
-                    b.ToTable("AttributeValue");
-                });
-
             modelBuilder.Entity("Rentless.Models.City", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("character varying(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("StateCode")
                         .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
@@ -71,7 +54,11 @@ namespace Rentless.Migrations
                         .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("Code", "StateCode");
+                    b.Property<string>("StateCode")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Code");
 
                     b.HasIndex("CountryId");
 
@@ -125,14 +112,14 @@ namespace Rentless.Migrations
                     b.Property<int>("ProductCode")
                         .HasColumnType("integer");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("numeric");
 
                     b.Property<Point>("Location")
                         .HasColumnType("geometry");
 
-                    b.Property<double>("Longtude")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Longtude")
+                        .HasColumnType("numeric");
 
                     b.HasKey("CustomerId", "ProductCode");
 
@@ -323,14 +310,8 @@ namespace Rentless.Migrations
                         .HasMaxLength(10);
 
                     b.Property<string>("CityCode")
-                        .HasColumnType("character varying(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("CityCode1")
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<string>("CityStateCode")
-                        .HasColumnType("character varying(10)");
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
 
                     b.Property<string>("CountryId")
                         .HasColumnType("character varying(10)")
@@ -346,37 +327,13 @@ namespace Rentless.Migrations
 
                     b.HasKey("Code");
 
+                    b.HasIndex("CityCode");
+
                     b.HasIndex("CountryId");
 
                     b.HasIndex("StateCode");
 
-                    b.HasIndex("CityCode1", "CityStateCode");
-
                     b.ToTable("PostalCode");
-                });
-
-            modelBuilder.Entity("Rentless.Models.ProdImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ProductCode")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Desc")
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("FileBase64")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id", "ProductCode");
-
-                    b.HasIndex("ProductCode");
-
-                    b.ToTable("ProdImage");
                 });
 
             modelBuilder.Entity("Rentless.Models.Product", b =>
@@ -401,20 +358,27 @@ namespace Rentless.Migrations
 
             modelBuilder.Entity("Rentless.Models.ProductAttribute", b =>
                 {
-                    b.Property<int>("ProductCode")
-                        .HasColumnType("integer");
+                    b.Property<int>("ProductCoode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AttributeTypeCode")
                         .HasColumnType("character varying(10)")
                         .HasMaxLength(10);
 
+                    b.Property<int?>("ProductCode")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Value")
                         .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("ProductCode", "AttributeTypeCode");
+                    b.HasKey("ProductCoode");
 
                     b.HasIndex("AttributeTypeCode");
+
+                    b.HasIndex("ProductCode");
 
                     b.ToTable("ProductAttribute");
                 });
@@ -503,15 +467,6 @@ namespace Rentless.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Rentless.Models.AttributeValue", b =>
-                {
-                    b.HasOne("Rentless.Models.AttributeType", "AttributeType")
-                        .WithMany("values")
-                        .HasForeignKey("AttributeTypeCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Rentless.Models.City", b =>
                 {
                     b.HasOne("Rentless.Models.Country", "Country")
@@ -520,9 +475,7 @@ namespace Rentless.Migrations
 
                     b.HasOne("Rentless.Models.State", "State")
                         .WithMany()
-                        .HasForeignKey("StateCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StateCode");
                 });
 
             modelBuilder.Entity("Rentless.Models.Country", b =>
@@ -571,6 +524,10 @@ namespace Rentless.Migrations
 
             modelBuilder.Entity("Rentless.Models.PostalCode", b =>
                 {
+                    b.HasOne("Rentless.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityCode");
+
                     b.HasOne("Rentless.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId");
@@ -578,34 +535,17 @@ namespace Rentless.Migrations
                     b.HasOne("Rentless.Models.State", "State")
                         .WithMany()
                         .HasForeignKey("StateCode");
-
-                    b.HasOne("Rentless.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityCode1", "CityStateCode");
-                });
-
-            modelBuilder.Entity("Rentless.Models.ProdImage", b =>
-                {
-                    b.HasOne("Rentless.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rentless.Models.ProductAttribute", b =>
                 {
                     b.HasOne("Rentless.Models.AttributeType", "AttributeType")
                         .WithMany()
-                        .HasForeignKey("AttributeTypeCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AttributeTypeCode");
 
                     b.HasOne("Rentless.Models.Product", "Product")
-                        .WithMany("ProductAttributes")
-                        .HasForeignKey("ProductCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ProductCode");
                 });
 
             modelBuilder.Entity("Rentless.Models.ProductDocument", b =>

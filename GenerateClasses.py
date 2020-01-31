@@ -108,3 +108,6 @@ def haversine(lat1, lon1, lat2, lon2):
 #importState()
 #importCity
 importCustListing()
+
+
+#dotnet-aspnet-codegenerator -p ".\Rentless.csproj" controller -name ProdImageController -api -m Rentless.Models.ProdImage -dc RentlessDBContext -outDir Controllers -namespace Rentless.Controllers

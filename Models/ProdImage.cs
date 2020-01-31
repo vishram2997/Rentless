@@ -5,24 +5,20 @@ using System.Collections.Generic;
 namespace Rentless.Models
 
 {
-    public class Product
+    public class ProdImage
     {
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Code {get; set;}
+        public int Id {get; set;}
 
         [StringLength(50)]
         public string Desc {get; set;}
 
-        [StringLength(50)]
-        public string Desc2 {get; set;}
+        public string FileBase64 {get; set;}   
 
-
-        public List<ProductAttribute> ProductAttributes {get; set;}
-        public List<ProdImage> Images {get; set;}
-
-        
+        public int ProductCode {get; set;}
+        public Product Product {get; set;}
 
         
     }

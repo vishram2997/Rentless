@@ -59,7 +59,8 @@ namespace Rentless
         {
            
             services.AddDbContext<RentlessDBContext>(opt =>
-                opt.UseNpgsql(@"Host=localhost;Database=Rentless;Username=postgres;Password=123456",
+                opt.UseNpgsql(
+                    Configuration.GetSection("DB").GetSection("DbConnection").Value,
                         x => x.UseNetTopologySuite()));
                 //opt.UseSqlServer(@"Server=.\;Database=Rentless;Trusted_Connection=True;MultipleActiveResultSets=true"));
             services.AddControllers().AddNewtonsoftJson();
